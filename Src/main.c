@@ -189,7 +189,7 @@ static void usartInit(void)
 }
 /**
  * @func   generateQRCode
- * @brief  Pintf qr_code in LCD
+ * @brief  Print qr_code in LCD
  * @param  data
  * @retval None
  */
