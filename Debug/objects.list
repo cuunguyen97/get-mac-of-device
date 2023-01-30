@@ -1,4 +1,5 @@
 "./SDK_1.0.3_NUCLEO-F401RE/SDK_1.0.3_NUCLEO-F401RE/shared/Middle/qr-code/qrcode.o"
+"./SDK_1.0.3_NUCLEO-F401RE/SDK_1.0.3_NUCLEO-F401RE/shared/Middle/qr-code-to-lcd-st7735s/qrcode-to-lcd.o"
 "./Src/main.o"
 "./Src/syscalls.o"
 "./Src/sysmem.o"

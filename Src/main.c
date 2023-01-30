@@ -31,11 +31,8 @@
 #include <stm32f401re_rcc.h>
 #include <stm32f401re_gpio.h>
 #include <stm32f401re_usart.h>
-#include <stdio.h>
-#include <string.h>
 #include <timer.h>
-#include <qrcode.h>
-#include <Ucglib.h>
+#include <qrcode-to-lcd.h>
 #include <buff.h>
 #include <misc.h>
 /******************************************************************************/
@@ -53,7 +50,7 @@
 /******************************************************************************/
 /*                              PRIVATE DATA                                  */
 /******************************************************************************/
-static ucg_t ucg;
+
 #define SIZE_BUFF_DATA_RX		256
 static uint8_t pBuffDataRx[SIZE_BUFF_DATA_RX] = {0};
 static buffqueue_t pUartRxQueue = {0};
@@ -75,7 +72,7 @@ void generateQRCode(char *pByData);
 
 int main(void)
 {
-	uint8_t byRxData[11];
+	uint8_t byRxData[8];
 
 	appInitCommon();
 
@@ -83,11 +80,11 @@ int main(void)
 	while(1)
 	{
 		processTimerScheduler();
-		if(bufNumItems(&pUartRxQueue)>=12)
+		if(bufNumItems(&pUartRxQueue)>=8)
 		{
 			while(bufNumItems(&pUartRxQueue) !=0)
 					{
-						for(int i = 0; i < 12;i++)
+						for(int i = 0; i < 8;i++)
 						{
 							bufDeDat(&pUartRxQueue, &byRxData[i]);
 
@@ -108,13 +105,9 @@ static void appInitCommon(void)
 {
 	SystemCoreClockUpdate();
 	serialUartInit();
-	//Khoi tao cai dat cho lcd
+	lcdInit();
 	TimerInit();
-	Ucglib4WireSWSPI_begin(&ucg, UCG_FONT_MODE_SOLID);
-	ucg_ClearScreen(&ucg);
-	ucg_SetColor(&ucg, 0, 255, 255, 255);//khoi tao mau chu la mau trang
-	ucg_SetColor(&ucg, 1, 0, 0, 0);// khoi tao mau backgroud la mau den
-	ucg_SetRotate180(&ucg);
+
 }
 
 /**
@@ -187,69 +180,7 @@ static void usartInit(void)
 		//5. ENABLE USART6
 		USART_Cmd(USART6, ENABLE);
 }
-/**
- * @func   generateQRCode
- * @brief  Print qr_code in LCD
- * @param  data
- * @retval None
- */
-void generateQRCode(char *pByData)
-{
-	  // Create the QR code
-	    QRCode qrcode;
 
-	    const uint8_t byEcc = 0;  //lowest level of error correction
-
-	    const uint8_t byVersion = 1;
-
-	    uint8_t pbyQrcodeData[qrcode_getBufferSize(byVersion)];
-
-	    qrcode_initText(&qrcode,
-	                    pbyQrcodeData,
-	                    byVersion,
-						byEcc,
-						pByData);
-	    const uint8_t byXyScale = 4;
-	    //LCD TFT 128x128 pixel
-	    const uint8_t byWidth = 128;
-	    const uint8_t byHeight = 128;
-	    uint8_t byXmax = byWidth/2;
-	    uint8_t byYmax = byHeight/2;
-	    uint8_t byOffset = (byXyScale*qrcode.size);
-	    uint8_t byX1 = byXmax - (byOffset/2);
-	    uint8_t byY1 = byYmax - (byOffset/2);
-
-
-	    uint8_t byPx1 = byX1;
-	    uint8_t byPy1 = byY1;
-
-	    uint8_t byPx2 = byPx1;
-	    uint8_t byPy2 = byPy1;
-
-	    ucg_SetColor(&ucg, 0, 255, 255, 255);
-	    ucg_ClearScreen(&ucg);
-	    // Top quiet zone
-	    for (uint8_t y = 0; y < qrcode.size; y++) {
-	        for(uint8_t x = 0; x < qrcode.size; x++) {
-	            bool mod = qrcode_getModule(&qrcode,x, y);
-	            byPx1 = byX1 + x * byXyScale;
-	            byPy1 = byX1 + y * byXyScale;
-	            byPx2 = byPx1 + byXyScale;
-	            byPy2 = byPy1 + byXyScale;
-	            if(mod){
-	            	for(uint8_t i =byPx1;i<=byPx2;i++)
-	            	{
-	            		for(uint8_t k = byPy1; k<= byPy2;k++)
-	            		{
-	            			ucg_DrawPixel(&ucg, i, k);
-	            		}
-	            	}
-
-	            }
-	        }
-	    }
-
-}
 /**
  * @func   USART6x_IRQHandler
  * @brief
