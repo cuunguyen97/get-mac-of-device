@@ -159,11 +159,11 @@ void clearLCD(void)
 void printText(char *str,uint8_t x,uint8_t y,const ucg_fntpgm_uint8_t *font)
 {
 	uint8_t byDelta = 0;
-
 	ucg_SetFont(&ucg, font);
 	for(uint8_t i = 0;i<strlen(str);i++)
 	{
 		byDelta = ucg_DrawGlyph(&ucg, x, y , 0, (uint8_t)str[i]);
+
 		x += byDelta;
 	}
 }

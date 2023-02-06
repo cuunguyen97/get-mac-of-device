@@ -4389,7 +4389,6 @@ void printText(char *str,uint8_t x,uint8_t y,const ucg_fntpgm_uint8_t *font)
 	uint8_t byDelta = 0;
  8002152:	2300      	movs	r3, #0
  8002154:	75bb      	strb	r3, [r7, #22]
-
 	ucg_SetFont(&ucg, font);
  8002156:	6879      	ldr	r1, [r7, #4]
  8002158:	4814      	ldr	r0, [pc, #80]	; (80021ac <printText+0x6c>)
@@ -4415,6 +4414,7 @@ void printText(char *str,uint8_t x,uint8_t y,const ucg_fntpgm_uint8_t *font)
  800217c:	f002 fcea 	bl	8004b54 <ucg_DrawGlyph>
  8002180:	4603      	mov	r3, r0
  8002182:	75bb      	strb	r3, [r7, #22]
+
 		x += byDelta;
  8002184:	7afa      	ldrb	r2, [r7, #11]
  8002186:	7dbb      	ldrb	r3, [r7, #22]
@@ -4852,10 +4852,6 @@ static void appInitCommon(void)
  80023d0:	4b02      	ldr	r3, [pc, #8]	; (80023dc <appInitCommon+0x20>)
  80023d2:	2200      	movs	r2, #0
  80023d4:	701a      	strb	r2, [r3, #0]
-
-
-
-
 }
  80023d6:	bf00      	nop
  80023d8:	bd80      	pop	{r7, pc}

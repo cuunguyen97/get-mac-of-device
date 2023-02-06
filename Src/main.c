@@ -176,10 +176,6 @@ static void appInitCommon(void)
 	lcdInit();
 	serialUartInit();
 	g_RxState = RX_STATE_START_1_BYTE;
-
-
-
-
 }
 /**
  * @func   processUartReceiveCommandInformationFeedBack
