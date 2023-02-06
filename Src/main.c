@@ -16,7 +16,7 @@
  *
  * Description: This code is used for tranning Lumi IOT member. It is the code form statandard.
  *
- * Author: PhuongNP
+ * Author: CuuNV
  *
  * Last Changed By:  $Author: CuuNV $
  * Revision:         $Revision: $
