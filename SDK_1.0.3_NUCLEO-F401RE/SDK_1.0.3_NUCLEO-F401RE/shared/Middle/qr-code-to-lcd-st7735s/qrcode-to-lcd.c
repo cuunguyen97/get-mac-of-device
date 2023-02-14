@@ -56,8 +56,10 @@ void lcdInit(void);
 
 uint8_t checkDataLength(uint8_t byDataLength, uint8_t byEccLevel, uint8_t byVersion);
 void generateQRCode(char *pByData,uint8_t byDataLength);
-void clearLCD(void);
-void printText(char *str,uint8_t x,uint8_t y,const ucg_fntpgm_uint8_t *font);
+void lcdClear(void);
+void lcdClearAxisX(uint8_t byX1, uint8_t byX2);
+void lcdClearAxisY(uint8_t byY1, uint8_t byY2);
+void lcdPrintText(char *str,uint8_t x,uint8_t y,const ucg_fntpgm_uint8_t *font);
 /******************************************************************************/
 /**
  * @func   lcdInit
@@ -73,7 +75,6 @@ void lcdInit(void)
 	ucg_SetColor(&ucg, 0, 255, 255, 255);//khoi tao mau chu la mau trang
 	ucg_SetColor(&ucg, 1, 0, 0, 0);// khoi tao mau backgroud la mau den
 	ucg_SetRotate180(&ucg);
-	ucg_DrawString(&ucg, 25, 60, 0, "Hello Lumi");
 }
 /**
  * @func   generateQRCode
@@ -115,7 +116,7 @@ void generateQRCode(char *pByData,uint8_t byDataLength)
 
 
 	    //Clear LCD
-	    ucg_ClearScreen(&ucg);
+	    lcdClearAxisY(byPy1,128);
 
 	    // Top quiet zone
 	    ucg_SetColor(&ucg, 0, 255, 255, 255);
@@ -141,22 +142,29 @@ void generateQRCode(char *pByData,uint8_t byDataLength)
 
 }
 /**
- * @func   clearLCD
+ * @func   lcdClear
  * @brief  Clear LCD
  * @param  None
  * @retval None
  */
-void clearLCD(void)
+void lcdClear(void)
 {
 	ucg_ClearScreen(&ucg);
 }
+void lcdClearAxisY(uint8_t byY1, uint8_t byY2)
+{
+	  ucg_SetColor(&ucg, 0, 0, 0, 0);
+	  ucg_SetMaxClipRange(&ucg);
+	  ucg_DrawBox(&ucg, 0, (ucg_int_t)byY1, ucg_GetWidth(&ucg),(ucg_int_t) (byY2-byY1));
+	  ucg_SetColor(&ucg, 0, 255, 255, 255);
+}
 /**
- * @func   printText
+ * @func   lcdPrintText
  * @brief  In Ra chuoi Str ra man hinh
  * @param
  * @retval None
  */
-void printText(char *str,uint8_t x,uint8_t y,const ucg_fntpgm_uint8_t *font)
+void lcdPrintText(char *str,uint8_t x,uint8_t y,const ucg_fntpgm_uint8_t *font)
 {
 	uint8_t byDelta = 0;
 	ucg_SetFont(&ucg, font);

@@ -12,7 +12,7 @@
  * Lumi, JSC.
  * All Rights Reserved
  *
- * File name: qrcode-to-lcd.h
+ * File name: menu.h
  *
  * Description:
  *
@@ -20,42 +20,39 @@
  *
  * Last Changed By:  $Author: CuuNV $
  * Revision:         $Revision: $
- * Last Changed:     $Date: $Jan 28, 2023
+ * Last Changed:     $Date: $Feb 10, 2023
  *
  * Code sample:
  ******************************************************************************/
-#ifndef SDK_1_0_3_NUCLEO_F401RE_SHARED_MIDDLE_QR_CODE_TO_LCD_ST7735S_QRCODE_TO_LCD_H_
-#define SDK_1_0_3_NUCLEO_F401RE_SHARED_MIDDLE_QR_CODE_TO_LCD_ST7735S_QRCODE_TO_LCD_H_
+
+#ifndef SDK_1_0_3_NUCLEO_F401RE_SHARED_MIDDLE_MENU_MENU_H_
+#define SDK_1_0_3_NUCLEO_F401RE_SHARED_MIDDLE_MENU_MENU_H_
+
 /******************************************************************************/
 /*                              INCLUDE FILES                                 */
 /******************************************************************************/
-#include <qrcode.h>
 #include <Ucglib.h>
+#include <string.h>
 /******************************************************************************/
 /*                     EXPORTED TYPES and DEFINITIONS                         */
 /******************************************************************************/
-//1. define for LCD
-#define WIDTH_LCD			128u
-#define HEIGHT_LCD			128u
-#define SCALE_ONE_PIXEL		3
-
-//2. define for Qr_code
-	// Level of error correction(0-3): 0~ 7%,1~ 15%, 2 ~25%, 3 ~ 30%
-#define ECC_LEVEL			0
-	// Version of Qrcode (MAX 6)
-#define VERSION_OF_QR		3
 
 /******************************************************************************/
 /*                              PRIVATE DATA                                  */
 /******************************************************************************/
+typedef enum {
+	NONE,
+	DUAL_MODE,
+	ZIGBEE_MODE,
+	BLE_MODE
+}TestSwMode_e;
+//-------------------------------MENU LEVEL 1----------------------------------
 
-void lcdInit(void);
-uint8_t checkDataLength(uint8_t byDataLength, uint8_t byEccLevel, uint8_t byVersion);
-void lcdClear(void);
-void lcdClearAxisX(uint8_t byX1, uint8_t byX2);
-void lcdClearAxisY(uint8_t byY1, uint8_t byY2);
-void lcdPrintText(char *str,uint8_t x,uint8_t y,const ucg_fntpgm_uint8_t *font);
-void generateQRCode(char *pByData,uint8_t byDataLength);
+
+//-------------------------------MENU LEVEL 2----------------------------------
+
+//-------------------------------MENU LEVEL 3----------------------------------
+
 /******************************************************************************/
 /*                              EXPORTED DATA                                 */
 /******************************************************************************/
@@ -63,7 +60,16 @@ void generateQRCode(char *pByData,uint8_t byDataLength);
 /******************************************************************************/
 /*                            PRIVATE FUNCTIONS                               */
 /******************************************************************************/
+TestSwMode_e getModeTest(void);
 
+uint8_t getChooseRows(uint8_t byNumOfRows,\
+				uint8_t bySizeOfRow,\
+				char pStrInterface[][20],\
+				const ucg_fntpgm_uint8_t *font);
+void prinfPoint(uint8_t bySizeOfRows,\
+		uint8_t byChooseRow,\
+		const ucg_fntpgm_uint8_t *font,\
+		ValueKey_e key);
 /******************************************************************************/
 /*                            EXPORTED FUNCTIONS                              */
 /******************************************************************************/
@@ -71,4 +77,4 @@ void generateQRCode(char *pByData,uint8_t byDataLength);
 /******************************************************************************/
 
 
-#endif /* SDK_1_0_3_NUCLEO_F401RE_SHARED_MIDDLE_QR_CODE_TO_LCD_ST7735S_QRCODE_TO_LCD_H_ */
+#endif /* SDK_1_0_3_NUCLEO_F401RE_SHARED_MIDDLE_MENU_MENU_H_ */
